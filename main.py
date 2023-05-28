@@ -9,7 +9,6 @@ window = pg.Surface((winSize[0]//3, winSize[1]//3))
 pg.display.set_caption("Meow Knight")
 
 clock = pg.time.Clock()
-animate = animationClass(pg)
 FONT  = ("data/fonts/rainyhearts.ttf")
 
 ShowFps = True
@@ -35,12 +34,13 @@ def eventHandler():
     #dynamic resolution
     dynamicRes = pg.transform.scale(window, winSize)
     display.blit(dynamicRes,(0,0))
-
+    
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
             loop = False
-
+    
+    
     if ShowFps == True:
         showFps()
 
@@ -51,17 +51,24 @@ def eventHandler():
     clock.tick(60)
 
 while loop == True:
+    
     window.fill((30,30,30))
     
     #inputs
     keyinput = pg.key.get_pressed()
-
+    mx, my = pg.mouse.get_pos()
+    mousePointer = pg.draw.rect(window, (255,255,255), (mx//3 ,  my//3 ,1,1))
+    
+    
     #CALLING FUNC
+    
     player.update(pg, window)
     player.movement(pg, keyinput)
     player.mapFunc(pg, window, keyinput)
+    player.updateAnimation(pg, window, keyinput)
 
-    animate.testStrips(pg, window)
     camera.update(pg, window, keyinput)
+    npc.updateJordin(pg, window, mousePointer, FONT, display)
+    
 
     eventHandler()
