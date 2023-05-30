@@ -52,7 +52,9 @@ class playerClass():
             animate.jumpAnimationLeft(pg, window)
 
         if self.jump == True and self.Right == True and not keyinput[pg.K_a] and not keyinput[pg.K_d]:
-            animate.jumpAnimationRight(pg, window)             
+            animate.jumpAnimationRight(pg, window) 
+
+        
         
     def movement(self, pg, keyinput):
 
@@ -189,7 +191,7 @@ class cameraClass():
             self.cameraSpeed = self.cameraFixSpeed
 
         elif self.cameraY + 160 <  player.y:
-            self.cameraSpeed = self.cameraFixSpeed
+            self.cameraSpeed = player.gravity
 
         else:
             self.cameraSpeed = 3
@@ -214,11 +216,21 @@ class animationClass():
         self.jumpSurface = pg.Surface((16,17))
         self.jumpCount = 0
 
+        #WEAPON
+
+        self.atk1Image = pg.image.load("data/sprites/atk1_sprite.png")
+        self.atk1WeaponImage = pg.image.load("data/sprites/atk1_sprite.png")
+        self.atk1Frames = []
+        self.atk1Surface = pg.Surface((16,17))
+        self.atk1Count = 0
+
+
+
     def idleAnimationLeft(self, pg, window):
         self.idleSurface.fill(0)
         self.idleSurface.set_colorkey(0)
 
-        for num in range(5):
+        for num in range(6):
             self.idleFrames.append(-16 * num)
         
         self.idleImageFlipped = pg.transform.flip(self.idleImage, True, False)
@@ -233,7 +245,7 @@ class animationClass():
         self.idleSurface.fill(0)
         self.idleSurface.set_colorkey(0)
 
-        for num in range(5):
+        for num in range(6):
             self.idleFrames.append(-16 * num)
 
         
@@ -247,13 +259,13 @@ class animationClass():
         self.runSurface.fill(0)
         self.runSurface.set_colorkey(0)
 
-        for num in range(6):
+        for num in range(8):
             self.runFrames.append(-16 * num)
         
         self.runImageFlipped = pg.transform.flip(self.runImage, True, False)
         self.runSurface.blit(self.runImageFlipped,(self.runFrames[int(self.runCount)], 0))
         
-        self.runCount += 0.12
+        self.runCount += 0.2
         window.blit(self.runSurface,(player.x - camera.cameraX, player.y - camera.cameraY + 3))
         
 
@@ -261,13 +273,13 @@ class animationClass():
         self.runSurface.fill(0)
         self.runSurface.set_colorkey(0)
 
-        for num in range(6):
+        for num in range(8):
             self.runFrames.append(-16 * num)
         
         
         self.runSurface.blit(self.runImage,(self.runFrames[int(self.runCount)], 0))
         
-        self.runCount += 0.12
+        self.runCount += 0.2
         window.blit(self.runSurface,(player.x - camera.cameraX, player.y - camera.cameraY + 3))
 
 
@@ -275,7 +287,7 @@ class animationClass():
         self.jumpSurface.fill(0)
         self.jumpSurface.set_colorkey(0)
 
-        for num in range(11):
+        for num in range(12):
             self.jumpFrames.append(-16 * num)
         
         self.jumpImageFlipped = pg.transform.flip(self.jumpImage, True, False)
@@ -288,7 +300,7 @@ class animationClass():
         self.jumpSurface.fill(0)
         self.jumpSurface.set_colorkey(0)
 
-        for num in range(11):
+        for num in range(12):
             self.jumpFrames.append(-16 * num)
         
         
@@ -297,6 +309,27 @@ class animationClass():
         self.jumpCount += 0.12
         window.blit(self.jumpSurface,(player.x - camera.cameraX, player.y - camera.cameraY + 3))
         
+
+    #ATK ANIMATION
+
+
+    def atk1AnimationLeft(self, pg, window):
+        self.atk1Surface.fill(0)
+        self.atk1Surface.set_colorkey(0)
+
+        for num in range(6):
+            self.atk1Frames.append(-16 * num)
+        
+        self.atk1ImageFlipped = pg.transform.flip(self.atk1Image, True, False)
+        self.atk1Surface.blit(self.atk1ImageFlipped,(self.atk1Frames[int(self.atk1Count)], 0))
+        self.atk1Count += 0.12
+        
+
+        window.blit(self.atk1Surface,(player.x - camera.cameraX, player.y - camera.cameraY + 3))
+
+
+
+
 
 import pygame as pg
 animate = animationClass(pg)
@@ -330,7 +363,7 @@ class npcClass():
 
         window.blit(self.idleSurface,(98 - camera.cameraX, 792 - camera.cameraY))
 
-        name = "Dindin"
+        name = "NPC(01)"
         nameRnd = font.render(name[0:int(self.nameSlider)], False, (255,255,255))
         
         #ACTION
@@ -345,8 +378,8 @@ class npcClass():
                 self.sliderCounter = 40
                 self.nameSlider
 
-            if self.nameSlider > 6:
-                self.nameSlider = 6
+            if self.nameSlider > 12:
+                self.nameSlider = 12
                 
         else:
             self.sliderCounter = 0
